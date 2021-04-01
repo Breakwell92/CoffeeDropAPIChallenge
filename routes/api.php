@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\CashbackCalculationController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/get-nearest-location/{postcode}', [LocationController::class,'getNearestLocation']);
+Route::post('/create-location', [LocationController::class,'storeNewLocation']);
+Route::post('/calculate-cashback', [CashbackCalculationController::class,'calculateCashback']);
+Route::get('/cashback-calc-requests', [CashbackCalculationController::class,'getRequests']);
