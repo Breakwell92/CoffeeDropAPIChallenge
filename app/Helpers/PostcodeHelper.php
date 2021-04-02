@@ -5,14 +5,6 @@ use Illuminate\Support\Facades\Http;
 
 class PostcodeHelper
 {
-
-    /**
-     * Postcode.io endpoint
-     * 
-     * @var string
-     */
-    protected static $postcode_api_endpoint = 'POSTCODES_API_ENDPOINT';
-
     /**
      * Returns latitude and longitude of the {$postcode} or false if bad response.
      *
@@ -21,7 +13,7 @@ class PostcodeHelper
      */
     public static function getLatitudeLongitude(string $postcode)
     {
-        $request = Http::get(env(self::$postcode_api_endpoint).$postcode);
+        $request = Http::get(config('api-endpoints.postcode').$postcode);
 
         if($request->successful()){
             $result = json_decode($request->body())->result;
@@ -44,14 +36,12 @@ class PostcodeHelper
      */
     public static function validatePostcode(string $postcode)
     {
-        $request = Http::get(env(self::$postcode_api_endpoint).$postcode.'/validate');
+        $request = Http::get(config('api-endpoints.postcode').$postcode.'/validate');
 
         if($request->successful()){
             $result = json_decode($request->body())->result;
 
             return $result;
-        }else{
-            //abort($request->status());
         }
     }
 }

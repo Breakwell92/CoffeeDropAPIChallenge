@@ -51,7 +51,7 @@ class CashbackCalculationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function calculateCashback(Request $request) : \Illuminate\Http\JsonResponse
+    public function calculateCashback(Request $request)
     {
         // Get user's quantities from the request
         $user_quantities = $request->all();
@@ -69,7 +69,8 @@ class CashbackCalculationController extends Controller
                     $cashback_value += ( $tier['max'] - $tier['min'] ) * $tier['cashback_value'][$coffee]; 
                 // Otherwise, check if the quantity exceeds the min value for the tier
                 }else if ($quantity > $tier['min']){
-                    // If so, calculate based on the quantity minus the min value, as either this is the first tier, or the min quantity has already been calculated for on the previous tier
+                    // If so, calculate based on the quantity minus the min value, as either this is the first tier,
+                    // or the min quantity has already been calculated for on the previous tier
                     $cashback_value += ($quantity - $tier['min']) * $tier['cashback_value'][$coffee];
                 }
             }

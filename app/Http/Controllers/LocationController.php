@@ -17,13 +17,16 @@ class LocationController extends Controller
     /**
      * Find the nearest location based on the user's input
      *
-     * @param  string $postcode
+     * @param  \Illuminate\Http\Request  $request
      * @return App\Http\Resources\LocationResource
      */
-    public function getNearestLocation(string $postcode) : LocationResource
+    public function getNearestLocation(Request $request) 
     {
+        $postcode = $request->postcode;
 
-        // TODO: Add error handling 
+        if(!$postcode){
+            return response()->json(['message' => 'Please enter a postcode'], 412);
+        }
 
         // Validate the postcode the user input
         if(!PostcodeHelper::validatePostcode($postcode)){
@@ -45,6 +48,7 @@ class LocationController extends Controller
                 ->whereNotNull('latitude')
                 ->whereNotNull('longitude')
                 ->with('openingTimes')
+                ->orderBy('distance', 'asc')
                 ->first();
 
         return new LocationResource($nearestLocation);
@@ -56,14 +60,18 @@ class LocationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return App\Http\Resources\LocationResource
      */
-    public function storeNewLocation(Request $request) : LocationResource
+    public function storeNewLocation(Request $request)
     {
+
         // Collect data from request
         $postcode = $request->postcode;
         $open_times = $request->opening_times;
         $closed_times = $request->closing_times;
 
-        // TODO: Validate postcode first
+        // Validate the postcode the user input
+        if(!PostcodeHelper::validatePostcode($postcode)){
+            return response()->json(['message' => 'Postcode invalid'], 400);
+        }
 
         // Establish the users latitude and longitude
         $lat_long = PostcodeHelper::getLatitudeLongitude($postcode);
@@ -75,11 +83,37 @@ class LocationController extends Controller
         ]);
 
         foreach($open_times as $day=>$time){
-            $location->openingTimes()->create([
-                'day' => $day,
-                'open_time' => $time,
-                'closed_time' => $closed_times[$day]
-            ]);
+            if($time != null){
+                try{
+                    $location->openingTimes()->create([
+                        'day' => $day,
+                        'open_time' => $time,
+                        'closed_time' => $closed_times[$day]
+                    ]); 
+                }catch(\Illuminate\Database\QueryException $e){
+                    // Catch for invalid time format entered
+                    if(str_contains($e->getMessage(), 'Incorrect time value:')){
+                        $location->forceDelete();
+                        return response()->json(['message' => $time.' is not a correct time format. Please use the 00:00 format'], 400);
+
+                    // Catch for invalid day of week string, where the same incorrect key is used in both open and closed time arrays
+                    }else if(str_contains($e->getMessage(), 'Incorrect time value:')){
+                        $location->forceDelete();
+                        return response()->json(['message' => $day.' is not a day of the week. Please check an try again'], 400);
+                    }
+                }catch(\ErrorException $e){
+                    // Catch for when incorrect day of week string used in open_times, as error occurs on line 98 when trying to access
+                    // closed_times using the day string. This error is thrown before attempting to store in the DB
+                    if(str_contains($e->getMessage(), 'Undefined array key') && $e->getFile() == __FILE__){
+                        $location->forceDelete();
+                        return response()->json(['message' => $day.' is not a day of the week. Please check an try again'], 400);
+                    }
+                }catch(\Exception $e){
+                    throw $e;
+                }
+               
+            }
+            
         }
 
         return new LocationResource($location);

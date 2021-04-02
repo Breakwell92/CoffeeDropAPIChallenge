@@ -27,11 +27,23 @@ class LocationOpeningTime extends Model
      * @var array
      */
     protected $hidden = [
-
+        'id',
+        'location_id',
+        'created_at',
+        'updated_at'
     ];
+
+    protected $appends = [
+		'day_and_opening_times'
+	];
 
     public function location()
     {
         return $this->belongsTo('App\Location');
+    }
+
+    public function getDayAndOpeningTimesAttribute()
+    {
+        return ucwords($this->day).': '.$this->open_time.' to '.$this->closed_time;
     }
 }

@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\CashbackCalculationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $days_of_week = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    return view('welcome', compact('days_of_week'));
 });
+
+Route::post('/get-nearest-location', [LocationController::class,'getNearestLocation'])->name('get-nearest-location');
+Route::post('/create-location', [LocationController::class,'storeNewLocation'])->name('create-location');
+Route::post('/calculate-cashback', [CashbackCalculationController::class,'calculateCashback'])->name('calculate-cashback');
+Route::post('/cashback-calc-requests', [CashbackCalculationController::class,'getRequests'])->name('cashback-calc-requests');

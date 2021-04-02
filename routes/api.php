@@ -17,11 +17,9 @@ use App\Http\Controllers\CashbackCalculationController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/get-nearest-location/{postcode}', [LocationController::class,'getNearestLocation'])->name('get-nearest-location');
+Route::post('/create-location', [LocationController::class,'storeNewLocation'])->name('create-location');
+Route::post('/calculate-cashback', [CashbackCalculationController::class,'calculateCashback'])->name('calculate-cashback');
+Route::post('/cashback-calc-requests', [CashbackCalculationController::class,'getRequests'])->name('cashback-calc-requests');
 
-Route::get('/get-nearest-location/{postcode}', [LocationController::class,'getNearestLocation']);
-Route::post('/create-location', [LocationController::class,'storeNewLocation']);
-Route::post('/calculate-cashback', [CashbackCalculationController::class,'calculateCashback']);
-Route::get('/cashback-calc-requests', [CashbackCalculationController::class,'getRequests']);
+

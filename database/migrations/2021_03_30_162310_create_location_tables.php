@@ -26,8 +26,8 @@ class CreateLocationTables extends Migration
             $table->id();
             $table->unsignedBigInteger('location_id');
             $table->enum('day', ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
-            $table->string('open_time');
-            $table->string('closed_time');
+            $table->time('open_time');
+            $table->time('closed_time');
             $table->timestamps();
 
             $table->foreign('location_id')->references('id')->on('locations');
