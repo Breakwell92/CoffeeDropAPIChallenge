@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\LocationOpeningTime;
 
 class LocationResource extends JsonResource
 {
@@ -21,5 +20,6 @@ class LocationResource extends JsonResource
             'distance' => $this->distance,
             'opening_times' => $this->openingTimes
         ];
+        
     }
 }

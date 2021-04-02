@@ -35,10 +35,10 @@ class CreateLocationTables extends Migration
 
         Schema::create('cashback_calculation_requests', function (Blueprint $table) {
             $table->id();
-            $table->ipAddress('visitor');
+            $table->ipAddress('remote_addr');
             $table->string('user_agent');
-            $table->json('request');
-            $table->integer('cashback');
+            $table->json('input');
+            $table->integer('cashback_value');
             $table->timestamps();
         });
     }

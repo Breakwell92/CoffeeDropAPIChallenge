@@ -15,10 +15,10 @@ class CashbackCalculationRequest extends Model
      * @var array
      */
     protected $fillable = [
-        'visitor',
+        'remote_addr',
         'user_agent',
-        'request',
-        'cashback'
+        'input',
+        'cashback_value'
     ];
 
     /**

@@ -32,7 +32,7 @@ class PostcodeHelper
             ];
 
         }else{
-            abort($request->status());
+            return false;
         }
     }
 
