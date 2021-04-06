@@ -1,19 +1,32 @@
 {
 	"info": {
+		"_postman_id": "5d93252b-3e11-4b4a-b2b8-3787e6b3ceca",
 		"name": "CoffeeDrop",
-		"_postman_id": "df15e329-169f-df36-623d-78cd2cdc1350",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "GetNearestLocation",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "imagine this was an oauth token",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": ""
+					"raw": "coffeedrop.test/api/get-nearest-location/CV7 9GQ",
+					"host": [
+						"coffeedrop",
+						"test"
+					],
+					"path": [
+						"api",
+						"get-nearest-location",
+						"CV7 9GQ"
+					]
 				},
 				"description": "Returns the address and opening times of the nearest CoffeeDrop location"
 			},
@@ -27,6 +40,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "token",
+						"value": "imagine this was an oauth token",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -34,9 +52,16 @@
 					"raw": "{\n      \"postcode\": \"CV313PP\",\n      \"opening_times\": {\"monday\" : \"09:00\", \"tuesday\" : \"09:00\", \"saturday\" : \"08:30\"},\n      \"closing_times\": {\"monday\" : \"19:00\", \"tuesday\" : \"19:00\", \"saturday\" : \"18:30\"}\n}\n\n"
 				},
 				"url": {
-					"raw": ""
-				},
-				"description": ""
+					"raw": "coffeedrop.test/api/create-location",
+					"host": [
+						"coffeedrop",
+						"test"
+					],
+					"path": [
+						"api",
+						"create-location"
+					]
+				}
 			},
 			"response": []
 		},
@@ -48,6 +73,11 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "token",
+						"value": "imagine this was an oauth token",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -55,9 +85,41 @@
 					"raw": "{\n      \"Ristretto\": 10,\n      \"Espresso\": 100,\n      \"Lungo\":30\n}\n\n"
 				},
 				"url": {
-					"raw": ""
-				},
-				"description": ""
+					"raw": "coffeedrop.test/api/calculate-cashback",
+					"host": [
+						"coffeedrop",
+						"test"
+					],
+					"path": [
+						"api",
+						"calculate-cashback"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCashbackCalculationRequests",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "imagine this was an oauth token",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "coffeedrop.test/api/cashback-calc-requests",
+					"host": [
+						"coffeedrop",
+						"test"
+					],
+					"path": [
+						"api",
+						"cashback-calc-requests"
+					]
+				}
 			},
 			"response": []
 		}
